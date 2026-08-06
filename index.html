@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Atrasos - Colégio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 550px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      color: #1a365d;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #4a5568;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3182ce;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #2b6cb0;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2c5282;
+    }
+
+    button:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .sucesso {
+      background-color: #c6f6d5;
+      color: #22543d;
+      border: 1px solid #9ae6b4;
+    }
+
+    .erro {
+      background-color: #fed7d7;
+      color: #742a2a;
+      border: 1px solid #feb2b2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Registro de Atraso Escolar</h2>
+    
+    <form id="formAtraso">
+      <div class="form-group">
+        <label for="nome">Nome do Aluno(a):</label>
+        <input type="text" id="nome" required placeholder="Digite o nome completo">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="turma">Turma:</label>
+          <input type="text" id="turma" required placeholder="Ex: 8º Ano A">
+        </div>
+
+        <div class="form-group">
+          <label for="pedagoga">Pedagoga Responsável:</label>
+          <input type="text" id="pedagoga" required placeholder="Nome da pedagoga">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="data">Data:</label>
+          <input type="date" id="data" required>
+        </div>
+
+        <div class="form-group">
+          <label for="hora">Hora:</label>
+          <input type="time" id="hora" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="motivo">Motivo do Atraso:</label>
+        <textarea id="motivo" required placeholder="Descreva o motivo do atraso..."></textarea>
+      </div>
+
+      <button type="submit" id="btnSalvar">Registrar Atraso</button>
+    </form>
+
+    <div id="mensagem"></div>
+  </div>
+
+  <script>
+    // Cole aqui a URL gerada na publicação do Google Apps Script
+    const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbxrH8OqEzc9dJ6zXvdl3_5ioxIhNPnuAHFG0jikp11q_NYmtEyObYMfqulfX8EAQZGW/exec";
+
+    // Preenche automaticamente data e hora atuais
+    window.addEventListener('DOMContentLoaded', () => {
+      const hoje = new Date();
+      document.getElementById('data').value = hoje.toISOString().split('T')[0];
+      
+      const horas = String(hoje.getHours()).padStart(2, '0');
+      const minutos = String(hoje.getMinutes()).padStart(2, '0');
+      document.getElementById('hora').value = `${horas}:${minutos}`;
+    });
+
+    // Envio do formulário
+    document.getElementById('formAtraso').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btnSalvar');
+      const msg = document.getElementById('mensagem');
+
+      btn.disabled = true;
+      btn.textContent = "Registrando...";
+      msg.style.display = "none";
+
+      const dados = {
+        nome: document.getElementById('nome').value,
+        turma: document.getElementById('turma').value,
+        data: document.getElementById('data').value,
+        hora: document.getElementById('hora').value,
+        motivo: document.getElementById('motivo').value,
+        pedagoga: document.getElementById('pedagoga').value
+      };
+
+      fetch(URL_DO_WEB_APP, {
+        method: 'POST',
+        mode: 'no-cors', // Evita restrições de CORS do Apps Script
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+      })
+      .then(() => {
+        msg.className = "sucesso";
+        msg.textContent = "Atraso registrado na planilha com sucesso!";
+        msg.style.display = "block";
+        
+        // Limpa o formulário mantendo data e hora atualizadas
+        document.getElementById('formAtraso').reset();
+        const hoje = new Date();
+        document.getElementById('data').value = hoje.toISOString().split('T')[0];
+        document.getElementById('hora').value = `${String(hoje.getHours()).padStart(2, '0')}:${String(hoje.getMinutes()).padStart(2, '0')}`;
+      })
+      .catch(error => {
+        msg.className = "erro";
+        msg.textContent = "Ocorreu um erro ao registrar: " + error.message;
+        msg.style.display = "block";
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "Registrar Atraso";
+      });
+    });
+  </script>
+</body>
+</html>
