@@ -1,6 +1,6 @@
 
 // Substitua pela URL gerada na publicação do seu Google Apps Script
-const URL_DO_WEB_APP = "COLE_AQUI_A_URL_DO_SEU_WEB_APP";
+const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbx26woJTit49xmoY3K-wNFaOQ3G0dhwjFqvw2rl6MzEAH3beRI7oIVAi2NFm75kiTTd/exec";
 
 // Preenche automaticamente a data e hora atuais no formulário
 window.addEventListener('DOMContentLoaded', () => {
@@ -37,13 +37,12 @@ document.getElementById('formAtraso').addEventListener('submit', function(e) {
     motivo: document.getElementById('motivo').value,
     pedagoga: document.getElementById('pedagoga').value
   };
-
-  // Envio dos dados para o Google Apps Script
+ // Envio dos dados para o Google Apps Script
   fetch(URL_DO_WEB_APP, {
     method: 'POST',
-    mode: 'no-cors', // Necessário para contornar políticas de CORS do Apps Script
+    mode: 'no-cors',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'text/plain;charset=utf-8'
     },
     body: JSON.stringify(dados)
   })
