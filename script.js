@@ -1,6 +1,6 @@
 
 // Substitua pela URL gerada na publicação do seu Google Apps Script
-const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbx26woJTit49xmoY3K-wNFaOQ3G0dhwjFqvw2rl6MzEAH3beRI7oIVAi2NFm75kiTTd/exec";
+const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbz9Tkr796L1RUUmfJnSBSOOv_p_ot4Zjfst_k19MFJa2dSeKhVMBx3fKDc3nyoMRnjO/exec";
 
 // Preenche automaticamente a data e hora atuais no formulário
 window.addEventListener('DOMContentLoaded', () => {
