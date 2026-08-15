@@ -1,6 +1,6 @@
 
 // Substitua pela URL gerada na publicação do seu Google Apps Script
-const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbz9Tkr796L1RUUmfJnSBSOOv_p_ot4Zjfst_k19MFJa2dSeKhVMBx3fKDc3nyoMRnjO/exec";
+const URL_DO_WEB_APP = "https://script.google.com/macros/s/AKfycbzt1K8qkm9cNm8yMynF1JUL_5UrKJGmhEEtJDO1STUoOGolx8hxLUMM5IHOjw8ll33i/exec";
 
 // Preenche automaticamente a data e hora atuais no formulário
 window.addEventListener('DOMContentLoaded', () => {
@@ -28,15 +28,15 @@ document.getElementById('formAtraso').addEventListener('submit', function(e) {
   btn.textContent = "Registrando...";
   msg.style.display = "none";
 
-  // Objeto com os dados do formulário
   const dados = {
-    nome: document.getElementById('nome').value,
-    turma: document.getElementById('turma').value,
-    data: document.getElementById('data').value,
-    hora: document.getElementById('hora').value,
-    motivo: document.getElementById('motivo').value,
-    pedagoga: document.getElementById('pedagoga').value
-  };
+  nome: document.getElementById('nome').value,
+  email: document.getElementById('email').value, // Novo campo
+  turma: document.getElementById('turma').value,
+  data: document.getElementById('data').value,
+  hora: document.getElementById('hora').value,
+  motivo: document.getElementById('motivo').value,
+  pedagoga: document.getElementById('pedagoga').value
+};
  // Envio dos dados para o Google Apps Script
   fetch(URL_DO_WEB_APP, {
     method: 'POST',
